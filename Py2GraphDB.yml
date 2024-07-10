@@ -9,7 +9,6 @@ dependencies:
   - pygeos
   # to fix install problem: https://github.com/sdorkenw/MeshParty/issues/63
   - pyyaml
-  - readline
   - regex
   - requests
   # - sacremoses=master=py_0

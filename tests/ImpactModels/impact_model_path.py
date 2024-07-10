@@ -2,6 +2,27 @@ import unittest
 import os
 
 from src.py2graphdb.config import config as CONFIG
+from impact_model_ks import *
+
+node_ids = {
+    "Organization": "org_001",
+    "ImpactModel": "impact_model_001",
+    "Program": "prog_001",
+    "Service": "service_001",
+    "Activity": "activity_001",
+    "Input": "input_001",
+    "Output": "output_001",
+    "Outcome": "outcome_001",
+    "Stakeholder": "stakeholder_001",
+    "StakeholderOutcome": "stakeholder_outcome_001",
+    "ImpactReport": "impact_report_001",
+    "ImpactRisk": "impact_risk_001",
+    "Indicator": "indicator_001",
+    "IndicatorReport": "indicator_report_001",
+    "ImpactScale": "impact_scale_001",
+    "ImpactDepth": "impact_depth_001",
+    "ImpactDuration": "impact_duration_001"
+}
 
 if os.path.exists(CONFIG.LOG_FILE):
     os.remove(CONFIG.LOG_FILE)
@@ -19,17 +40,17 @@ with im:
     from impact_model_ks import ImpactModelNode
     print()
 
-def create_node(id):
-    return ImpactModelNode(inst_id=f'im.{id}', keep_db_in_synch=True)
+def create_node(node_class, id):
+    return node_class(inst_id=f'im.{node_ids[id]}', keep_db_in_synch=True)
 
 
-def delete_node(id):
-    ImpactModelNode(inst_id=f'im.{id}', keep_db_in_synch=True).delete()
+def delete_node(node_class, id):
+    node_class(inst_id=f'im.{node_ids[id]}', keep_db_in_synch=True).delete()
 
 
-def init_test_node(id):
-    delete_node(id)
-    return create_node(id)
+def init_test_node(node_class, id):
+    delete_node(node_class, id)
+    return create_node(node_class, id)
 
 
 class ImpactModelConfig():
@@ -40,23 +61,23 @@ class ImpactModelConfig():
 
     def init_config(self):
         with im:
-            org = init_test_node("Organization")
-            impact_model = init_test_node("ImpactModel")
-            program = init_test_node("Program")
-            service = init_test_node("Service")
-            activity = init_test_node("Activity")
-            input = init_test_node("Input")
-            output = init_test_node("Output")
-            outcome = init_test_node("Outcome")
-            stakeholder = init_test_node("Stakeholder")
-            stakeholder_outcome = init_test_node("StakeholderOutcome")
-            impact_report = init_test_node("ImpactReport")
-            impact_risk = init_test_node("ImpactRisk")
-            indicator = init_test_node("Indicator")
-            indicator_report = init_test_node("IndicatorReport")
-            impact_scale = init_test_node("ImpactScale")
-            impact_depth = init_test_node("ImpactDepth")
-            impact_duration = init_test_node("ImpactDuration")
+            org = init_test_node(OrganizationNode, "Organization")
+            impact_model = init_test_node(ImpactModelNode, "ImpactModel")
+            program = init_test_node(ProgramNode, "Program")
+            service = init_test_node(ServiceNode, "Service")
+            activity = init_test_node(ActivityNode, "Activity")
+            input = init_test_node(InputNode, "Input")
+            output = init_test_node(OutputNode, "Output")
+            outcome = init_test_node(OutcomeNode, "Outcome")
+            stakeholder = init_test_node(StakeholderNode, "Stakeholder")
+            stakeholder_outcome = init_test_node(StakeholderOutcomeNode, "StakeholderOutcome")
+            impact_report = init_test_node(ImpactReportNode, "ImpactReport")
+            impact_risk = init_test_node(ImpactRiskNode, "ImpactRisk")
+            indicator = init_test_node(IndicatorNode, "Indicator")
+            indicator_report = init_test_node(IndicatorReportNode, "IndicatorReport")
+            impact_scale = init_test_node(ImpactScaleNode, "ImpactScale")
+            impact_depth = init_test_node(ImpactDepthNode, "ImpactDepth")
+            impact_duration = init_test_node(ImpactDurationNode, "ImpactDuration")
             
 
             input.has_contributing_stakeholder = stakeholder.inst_id
