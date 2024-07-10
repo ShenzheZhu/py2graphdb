@@ -16,7 +16,7 @@ from src.py2graphdb.ontology.operators import *
 CONFIG.STORE_LOCAL = False
 with im:
     from src.py2graphdb.utils.db_utils import SPARQLDict
-    from .impact_model_ks import ImpactModelNode
+    from impact_model_ks import ImpactModelNode
     print()
 
 def create_node(id):
@@ -110,12 +110,30 @@ class TestImpactModelPathConfig(unittest.TestCase):
 
         _ = ImpactModelConfig()
 
-    def test_path_collection(self):
+    def test_path_1(self):
         with im:
             start = 'im.ImpactModel'
             end = 'im.ImpactReport'
             res = SPARQLDict._process_path_request(start, end, action='collect', direction='children', how='shortest')
-            print(res)
+            expected_output = [{'start': 'im.ImpactModel', 'end': 'im.ImpactReport', 'path': ['im.Program', 'im.Service', 'im.Outcome', 'im.StakeholderOutcome']}]
+            self.assertEqual(res, expected_output)
 
+    def test_path_2(self):
+        with im:
+            start = 'im.ImpactModel'
+            end = 'im.ImpactReport'
+            res = SPARQLDict._process_path_request(start, end, action='collect', direction='children', how='all')
+            expected_output = [{'start': 'im.ImpactModel', 'end': 'im.ImpactReport', 'path': ['im.Program', 'im.Service', 'im.Activity', 'im.Outcome', 'im.StakeholderOutcome']},
+                                {'start': 'im.ImpactModel', 'end': 'im.ImpactReport', 'path': ['im.Program', 'im.Service', 'im.Outcome', 'im.StakeholderOutcome']}]
+            self.assertEqual(res, expected_output)
+
+    def test_path_3(self):
+        with im:
+            start = 'im.ImpactModel'
+            end = 'im.ImpactReport'
+            res = SPARQLDict._process_path_request(start, end, action='collect', direction='children', how='first')
+            expected_output = {'start': 'im.ImpactModel', 'end': 'im.ImpactReport', 'path': ['im.Program', 'im.Service', 'im.Outcome', 'im.StakeholderOutcome']}
+            self.assertEqual(res, expected_output)
+            
 if __name__ == '__main__':
     unittest.main(exit=False)
