@@ -72,7 +72,7 @@ with im:
         range = [Thing]
         rdfs.comment = ["Indicates the indicator associated with the outcome"]
 
-    class UsesOutput(ObjectProperty):
+    class usesOutput(ObjectProperty):
         range = [Thing]
         rdfs.comment = ["Indicates that the indicator uses a certain output"]
 
